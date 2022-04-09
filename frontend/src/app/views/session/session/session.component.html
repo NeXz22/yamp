@@ -1,1 +1,6 @@
-<p>session works!</p>
+<div class="socket-connection-status">
+    Connection:
+    <i *ngIf="socketConnectionStatus === 0" class="pi pi-spin pi-spinner"></i>
+    <i *ngIf="socketConnectionStatus === 1" class="pi pi-check"></i>
+    <i *ngIf="socketConnectionStatus === 2" class="pi pi-times"></i>
+</div>

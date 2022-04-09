@@ -1,1 +1,5 @@
-<p-button label="Click" ></p-button>
+<form (ngSubmit)="onCreateSessionFormSubmit()">
+    <label for="sessionName">Enter a name for your Mob-Session</label>
+    <input id="sessionName" type="text" pInputText [(ngModel)]="sessionName" [ngModelOptions]="{standalone: true}" />
+    <p-button label="Create Mob-Session" type="submit" [disabled]="!sessionName.trim()"></p-button>
+</form>

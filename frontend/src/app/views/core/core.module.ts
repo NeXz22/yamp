@@ -4,7 +4,8 @@ import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import {ButtonModule} from 'primeng/button';
+import {SharedModule} from '../../shared/shared.module';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import {ButtonModule} from 'primeng/button';
     ],
     imports: [
         CommonModule,
-        ButtonModule,
+        SharedModule,
+        FormsModule,
     ]
 })
 export class CoreModule {
