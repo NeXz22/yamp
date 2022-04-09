@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {io} from "socket.io-client";
 import {SocketConnectionStatus} from '../shared/SocketConnectionStatus';
+import {ActivatedRoute, Router} from '@angular/router';
+import {first} from 'rxjs';
 
 @Component({
     selector: 'app-session',
@@ -10,11 +12,36 @@ import {SocketConnectionStatus} from '../shared/SocketConnectionStatus';
 export class SessionComponent implements OnInit {
 
     socketConnectionStatus: SocketConnectionStatus = SocketConnectionStatus.CONNECTING;
+    urlToShare = '';
+    private sessionName: string = '';
 
-    constructor() {
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+    ) {
     }
 
     ngOnInit(): void {
+        this.route.queryParams.pipe(first()).subscribe({
+            next: params => {
+                this.sessionName = params['id'];
+                if (!this.sessionName) {
+                    console.error('No Session-ID provided. Redirecting...');
+                    this.router.navigate(['']).then();
+                }
+            },
+            error: () => {
+                console.error('Could not retrieve Session-ID. Redirecting...');
+                this.router.navigate(['']).then();
+            }
+        });
+
+        this.urlToShare = window.location.href;
+
+        this.establishServerConnection();
+    }
+
+    private establishServerConnection(): void {
         const socket = io("http://localhost:4444");
 
         socket.on("connect", () => {
@@ -28,4 +55,7 @@ export class SessionComponent implements OnInit {
         });
     }
 
+    copyToClipboard(toCopy: string): void {
+        navigator.clipboard.writeText(toCopy).then();
+    }
 }

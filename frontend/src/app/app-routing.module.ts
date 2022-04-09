@@ -5,7 +5,7 @@ import {HomeComponent} from './views/core/home/home.component';
 import {PageNotFoundComponent} from './views/core/page-not-found/page-not-found.component';
 
 const routes: Routes = [
-    {path: 'session', loadChildren: () => import('./views/session/session.module').then(m => m.SessionModule)},
+    {path: 's', loadChildren: () => import('./views/session/session.module').then(m => m.SessionModule)},
     {path: '', component: HomeComponent},
     {path: '**', component: PageNotFoundComponent},
 ];

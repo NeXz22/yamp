@@ -1,0 +1,10 @@
+<form (submit)="onAddParticipantSubmit($event, addParticipantInput)">
+    <div class="p-inputgroup">
+        <input type="text" pInputText placeholder="Enter Name" #addParticipantInput>
+        <button type="submit" pButton pRipple label="Add Participant" [disabled]="!addParticipantInput.value.trim()"></button>
+    </div>
+</form>
+
+<div *ngFor="let participant of participants">
+    {{participant}}
+</div>

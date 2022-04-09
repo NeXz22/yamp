@@ -1,6 +1,13 @@
+<div>
+    <input value="{{urlToShare}}" disabled>
+    <p-button type="submit" (click)="copyToClipboard(urlToShare)"><i class="pi pi-copy"></i></p-button>
+</div>
+
 <div class="socket-connection-status">
     Connection:
     <i *ngIf="socketConnectionStatus === 0" class="pi pi-spin pi-spinner"></i>
-    <i *ngIf="socketConnectionStatus === 1" class="pi pi-check"></i>
-    <i *ngIf="socketConnectionStatus === 2" class="pi pi-times"></i>
+    <i *ngIf="socketConnectionStatus === 1" class="pi pi-check-circle"></i>
+    <i *ngIf="socketConnectionStatus === 2" class="pi pi-times-circle"></i>
 </div>
+
+<app-participants-list></app-participants-list>

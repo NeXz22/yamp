@@ -6,10 +6,20 @@ const io = require('socket.io')(http, {
     }
 });
 
+
 http.listen(4444, () => {
     console.log('Listening on port 4444');
 });
 
-io.on("connection", () => {
-    console.log('new client connected.');
+
+io.on("connection", (socket) => {
+    console.log('--------------------------------');
+    console.log('New client connected. Client-ID: ' + socket.id);
+    console.log('Number of currently connected clients: ' + io.engine.clientsCount);
+
+    socket.on("disconnect", (reason) => {
+        console.log('--------------------------------');
+        console.log('Client disconnected. Client-ID: ' + socket.id + '. Reason: ' + reason);
+        console.log('Number of currently connected clients: ' + io.engine.clientsCount);
+    });
 });

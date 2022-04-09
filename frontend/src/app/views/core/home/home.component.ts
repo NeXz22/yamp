@@ -18,8 +18,8 @@ export class HomeComponent implements OnInit {
     onCreateSessionFormSubmit(): void {
         const sessionId = this.sessionName.trim().toLowerCase() + Date.now();
 
-        this.router.navigate(['/session'], {queryParams: {id: sessionId}})
+        this.router.navigate(['/s'], {queryParams: {id: sessionId}})
             .then()
-            .catch(reason => console.log('Navigation towards \'/session/\' failed. Reason: ' + reason));
+            .catch(reason => console.log(`Navigation towards \'/session/\' failed. Reason: ${reason}`));
     }
 }
