@@ -22,4 +22,15 @@ io.on("connection", (socket) => {
         console.log('Client disconnected. Client-ID: ' + socket.id + '. Reason: ' + reason);
         console.log('Number of currently connected clients: ' + io.engine.clientsCount);
     });
+
+    socket.on('join session by name', (requestedSessionToJoin) => {
+        socket.join(requestedSessionToJoin);
+        const userJoinedSessionMessage = `User [${socket.id}] joined session [${requestedSessionToJoin}].`;
+        io.in(requestedSessionToJoin).emit('message to all users', userJoinedSessionMessage);
+        console.log(userJoinedSessionMessage);
+    });
+});
+
+io.of("/").adapter.on("create-room", (room) => {
+    console.log(`Room [${room}] was created`);
 });

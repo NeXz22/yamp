@@ -47,11 +47,19 @@ export class SessionComponent implements OnInit {
         socket.on("connect", () => {
             this.socketConnectionStatus = SocketConnectionStatus.ESTABLISHED;
             console.log(`Connected to Socket. User-ID: ${socket.id}.`);
+
+            socket.emit('join session by name', this.sessionName, (response: any) => {
+                console.log(response);
+            });
         });
 
-        socket.on("disconnect", () => {
+        socket.on("disconnect", (reason) => {
             this.socketConnectionStatus = SocketConnectionStatus.FAILED;
-            console.log(`Disconnected from Socket. User-ID: ${socket.id}.`);
+            console.log(`Disconnected from Socket. Reason: ${reason}.`);
+        });
+
+        socket.on('message to all users', (message: string) => {
+            console.log(message);
         });
     }
 
