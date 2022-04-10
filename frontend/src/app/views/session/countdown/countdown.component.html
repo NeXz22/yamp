@@ -1,0 +1,4 @@
+{{countdownToDisplay}}
+<p-button *ngIf="!countdownRunning" label="Start Dountdown" type="button" (click)="onStartCountdown()"></p-button>
+<p-button *ngIf="countdownRunning" label="Stop Dountdown" type="button" (click)="onStopCountdown()"></p-button>
+<p-button label="Reset Countdown" type="button" (click)="onResetCountdown()"></p-button>

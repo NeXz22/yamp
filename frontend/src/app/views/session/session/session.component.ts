@@ -66,4 +66,8 @@ export class SessionComponent implements OnInit {
     copyToClipboard(toCopy: string): void {
         navigator.clipboard.writeText(toCopy).then();
     }
+
+    onSettingChanged(): void {
+        console.log('settings changed');
+    }
 }
