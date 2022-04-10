@@ -10,8 +10,8 @@
     <i *ngIf="socketConnectionStatus === 2" class="pi pi-times-circle"></i>
 </div>
 
-<app-participants-list></app-participants-list>
+<app-participants-list [participants]="participants"></app-participants-list>
 
 <app-countdown></app-countdown>
 
-<app-settings (settingsChangedEvent)="onSettingChanged()"></app-settings>
+<app-settings [settingsForm]="settingsForm"></app-settings>

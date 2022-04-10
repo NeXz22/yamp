@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {FormControl} from '@angular/forms';
 
 @Component({
     selector: 'app-participants-list',
@@ -6,7 +7,9 @@ import {Component, Input, OnInit} from '@angular/core';
     styleUrls: ['./participants-list.component.scss']
 })
 export class ParticipantsListComponent implements OnInit {
-    participants: string[] = [];
+
+    @Input()
+    participants: FormControl | undefined;
 
     constructor() {
     }
@@ -15,7 +18,8 @@ export class ParticipantsListComponent implements OnInit {
     }
 
     onAddParticipantSubmit(e: SubmitEvent, newParticipant: HTMLInputElement): void {
-        this.participants.push(newParticipant.value.trim());
+        this.participants?.value.push(newParticipant.value.trim());
+        this.participants?.updateValueAndValidity();
         newParticipant.value = '';
         e.preventDefault();
     }

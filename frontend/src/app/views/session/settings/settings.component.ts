@@ -1,5 +1,6 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {SessionSettings} from '../shared/session-settings';
 
 @Component({
     selector: 'app-settings',
@@ -9,36 +10,23 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 export class SettingsComponent implements OnInit {
 
     @Output()
-    settingsChangedEvent: EventEmitter<any> = new EventEmitter<any>();
-    settingsForm!: FormGroup;
+    settingsChangedEvent: EventEmitter<SessionSettings> = new EventEmitter<SessionSettings>();
+    @Input()
+    settingsForm: FormGroup | undefined;
 
     get sessionSettings(): FormGroup {
-        return this.settingsForm.get('sessionSettings') as FormGroup;
+        return this.settingsForm?.get('sessionSettings') as FormGroup;
     }
 
     get userSpecificSettings(): FormGroup {
-        return this.settingsForm.get('userSpecificSettings') as FormGroup;
+        return this.settingsForm?.get('userSettings') as FormGroup;
     }
 
-    constructor(
-        private formBuilder: FormBuilder,
-    ) {
+    constructor() {
     }
 
     ngOnInit(): void {
-        this.settingsForm = this.formBuilder.group({
-            sessionSettings: this.formBuilder.group({
-                inputMinutes: new FormControl(0, []),
-                inputSeconds: new FormControl(0, []),
-            }),
-            userSpecificSettings: this.formBuilder.group({
 
-            })
-        });
-
-        this.settingsForm.get('sessionSettings')!.valueChanges.subscribe({
-            next: () => this.settingsChangedEvent.emit(),
-        })
     }
 
 }
