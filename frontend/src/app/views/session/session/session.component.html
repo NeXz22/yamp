@@ -15,7 +15,7 @@
     <div class="grid">
         <div>
             <section>
-                <h3>Settings</h3>
+                <h3>Session Settings <i pTooltip="Will be auto-synced with other session users" class="pi pi-info-circle"></i></h3>
                 <form [formGroup]="sessionSettings">
                     <label for="userInputCountdownMinutes" style="display: block">Minutes</label>
                     <p-inputNumber [disabled]="sessionSettings?.get('countdownRunning')?.value"
@@ -34,6 +34,16 @@
                                    incrementButtonClass="p-button-secondary" incrementButtonIcon="pi pi-plus"
                                    decrementButtonIcon="pi pi-minus">
                     </p-inputNumber>
+
+
+                    <label for="useNavigatorRole" style="display: block">Use Navigator-Role</label>
+                    <p-inputSwitch id="useNavigatorRole" formControlName="useNavigatorRole"></p-inputSwitch>
+
+                    <div>
+                        <p-button type="button" (click)="onShuffleParticipants()">Shuffle Participants</p-button>
+                    </div>
+
+                    <h3>User Settings <i pTooltip="Will NOT be synced with other session users" class="pi pi-info-circle"></i></h3>
                 </form>
             </section>
         </div>

@@ -3,4 +3,5 @@ export interface SessionSettings {
     inputMinutes: number;
     inputSeconds: number;
     participants: string[];
+    useNavigatorRole: boolean;
 }

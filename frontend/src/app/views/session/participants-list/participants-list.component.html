@@ -1,13 +1,14 @@
 <form (submit)="onAddParticipantSubmit($event, addParticipantInput)">
     <div class="p-inputgroup">
         <input type="text" pInputText placeholder="Enter Name" #addParticipantInput>
-        <button type="submit" pButton pRipple label="Add Participant" [disabled]="!addParticipantInput.value.trim()"></button>
+        <button type="submit" pButton pRipple label="Add Participant"
+                [disabled]="!addParticipantInput.value.trim()"></button>
     </div>
 </form>
 
 <div class="participants-list">
     <div class="participant" *ngFor="let participant of participants?.value; let i = index">
-        <p-avatar class="text-mute avatar-extra-large" pBadge value="{{i + 1}}" pTooltip="{{participant}}" size="large" label="{{participant.charAt(0).toUpperCase() + participant.charAt(1).toUpperCase()}}"></p-avatar>
-        <span>{{participant}}</span>
+        <p-avatar class="text-mute avatar-extra-large" pBadge value="{{i + 1}}" pTooltip="{{participant}}" size="large"
+                  label="{{participant.charAt(0).toUpperCase() + participant.charAt(1).toUpperCase()}}"></p-avatar>
     </div>
 </div>

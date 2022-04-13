@@ -18,6 +18,8 @@
         "@angular/platform-browser": "~13.2.0",
         "@angular/platform-browser-dynamic": "~13.2.0",
         "@angular/router": "~13.2.0",
+        "@types/lodash": "^4.14.181",
+        "lodash": "^4.17.21",
         "primeicons": "^5.0.0",
         "primeng": "^13.3.2",
         "rxjs": "~7.5.0",

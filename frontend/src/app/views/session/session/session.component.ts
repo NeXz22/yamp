@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {debounceTime, first, Observable, of, Subscription, switchMap} from 'rxjs';
 import {SessionSettings} from '../shared/session-settings';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-session',
@@ -75,6 +76,7 @@ export class SessionComponent implements OnInit {
                 countdownRunning: new FormControl(false, []),
                 countdownStartedAt: new FormControl(false, []),
                 timePassedSinceTimerStart: new FormControl(false, []),
+                useNavigatorRole: new FormControl(true, []),
             }),
             userSettings: this.formBuilder.group({})
         });
@@ -188,5 +190,9 @@ export class SessionComponent implements OnInit {
         const seconds = Math.floor((milliSecondsToConvert / 1000)) % 60;
         const minutes = Math.floor((milliSecondsToConvert / 60000)) % 60;
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    onShuffleParticipants(): void {
+        this.participants.patchValue(_.shuffle(this.participants.value));
     }
 }

@@ -6,6 +6,7 @@ import {SharedModule} from '../../shared/shared.module';
 import {ParticipantsListComponent} from './participants-list/participants-list.component';
 import {TooltipModule} from 'primeng/tooltip';
 import {BadgeModule} from 'primeng/badge';
+import {InputSwitchModule} from 'primeng/inputswitch';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import {BadgeModule} from 'primeng/badge';
         SharedModule,
         TooltipModule,
         BadgeModule,
+        InputSwitchModule,
     ]
 })
 export class SessionModule {
