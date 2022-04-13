@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+.text-mute {
+    user-select: none;
+}
+
+.avatar-extra-large {
+    .p-avatar.p-avatar-lg {
+        width: 5rem;
+        height: 5rem;
+        font-size: 2.5rem;
+    }
+}

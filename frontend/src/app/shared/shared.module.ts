@@ -5,6 +5,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {RippleModule} from 'primeng/ripple';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {AvatarModule} from 'primeng/avatar';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
         InputNumberModule,
         FormsModule,
         ReactiveFormsModule,
+        AvatarModule,
     ],
     exports: [
         ButtonModule,
@@ -25,6 +27,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
         InputNumberModule,
         FormsModule,
         ReactiveFormsModule,
+        AvatarModule,
     ]
 })
 export class SharedModule {

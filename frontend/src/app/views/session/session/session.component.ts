@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {io, Socket} from "socket.io-client";
 import {SocketConnectionStatus} from '../shared/SocketConnectionStatus';
 import {ActivatedRoute, Router} from '@angular/router';
-import {debounceTime, first, of, switchMap} from 'rxjs';
+import {debounceTime, first, Observable, of, Subscription, switchMap} from 'rxjs';
 import {SessionSettings} from '../shared/session-settings';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
@@ -18,6 +18,11 @@ export class SessionComponent implements OnInit {
     private sessionName: string = '';
     private socket!: Socket;
     settingsForm!: FormGroup;
+    userInputTimeInMilliSeconds: number = 0;
+
+    countdownToDisplay = '';
+    private timerObservable: Observable<number> | undefined;
+    private timerSubscription: Subscription | undefined;
 
     get sessionSettings(): FormGroup {
         return this.settingsForm.get('sessionSettings') as FormGroup;
@@ -27,8 +32,28 @@ export class SessionComponent implements OnInit {
         return this.settingsForm.get('userSettings') as FormGroup;
     }
 
+    get inputMinutes(): FormControl {
+        return this.sessionSettings.get('inputMinutes') as FormControl;
+    }
+
+    get inputSeconds(): FormControl {
+        return this.sessionSettings.get('inputSeconds') as FormControl;
+    }
+
     get participants(): FormControl {
         return this.sessionSettings.get('participants') as FormControl;
+    }
+
+    get countdownRunning(): FormControl {
+        return this.sessionSettings.get('countdownRunning') as FormControl;
+    }
+
+    get countdownStartedAt(): FormControl {
+        return this.sessionSettings.get('countdownStartedAt') as FormControl;
+    }
+
+    get timePassedSinceTimerStart(): FormControl {
+        return this.sessionSettings.get('timePassedSinceTimerStart') as FormControl;
     }
 
 
@@ -44,9 +69,12 @@ export class SessionComponent implements OnInit {
         this.settingsForm = this.formBuilder.group({
             sessionSettings: this.formBuilder.group({
                 sessionId: new FormControl(null, []),
-                inputMinutes: new FormControl(0, []),
+                inputMinutes: new FormControl(10, []),
                 inputSeconds: new FormControl(0, []),
                 participants: new FormControl([], []),
+                countdownRunning: new FormControl(false, []),
+                countdownStartedAt: new FormControl(false, []),
+                timePassedSinceTimerStart: new FormControl(false, []),
             }),
             userSettings: this.formBuilder.group({})
         });
@@ -68,17 +96,17 @@ export class SessionComponent implements OnInit {
             }
         });
 
-        this.urlToShare = window.location.href;
-
-        this.establishServerConnection();
-
         this.settingsForm.get('sessionSettings')!.valueChanges
             .pipe(debounceTime(0), switchMap((settingsChangedEvent) => of(settingsChangedEvent)))
             .subscribe({
                 next: () => {
-                    this.sendUpdatedSessionSettings(this.sessionSettings.value);
+                    this.emitUpdatedSessionSettings(this.sessionSettings.value);
                 },
             })
+
+        this.urlToShare = window.location.href;
+
+        this.establishServerConnection();
     }
 
     private establishServerConnection(): void {
@@ -104,6 +132,14 @@ export class SessionComponent implements OnInit {
             console.log(`~Server: Updated SessionSettings received:`);
             console.log(updatedSessionSettings);
             this.sessionSettings.patchValue(updatedSessionSettings, {emitEvent: false});
+            this.countdownToDisplay = this.formatMilliSecondsToCountdownString(this.userInputTimeInMilliSeconds);
+            this.updateUserInputTimeInMilliSeconds();
+        });
+
+        this.socket.on('settings for joined session exist', (settingsAlreadyExisting: SessionSettings) => {
+            console.log(`~Server: Settings for joined session already exist:`);
+            console.log(settingsAlreadyExisting);
+            this.sessionSettings.patchValue(settingsAlreadyExisting, {emitEvent: false});
         });
     }
 
@@ -111,7 +147,46 @@ export class SessionComponent implements OnInit {
         navigator.clipboard.writeText(toCopy).then();
     }
 
-    sendUpdatedSessionSettings(updatedSessionSettings: SessionSettings): void {
+    emitUpdatedSessionSettings(updatedSessionSettings: SessionSettings): void {
         this.socket.emit('sessionSettings updated', updatedSessionSettings, () => {});
+    }
+
+    updateUserInputTimeInMilliSeconds(): void {
+        this.userInputTimeInMilliSeconds = +this.inputMinutes.value * 60000 + +this.inputSeconds.value * 1000;
+    }
+
+    // onStartCountdown(emitEvent: boolean): void {
+    //     this.countdownRunning?.patchValue(true, {emitEvent: emitEvent});
+    //     this.countdownStartedAt.patchValue(Date.now() - this.timePassedSinceTimerStart.value);
+    //     this.countdownToDisplay = this.formatMilliSecondsToCountdownString(this.userInputTimeInMilliSeconds - this.timePassedSinceTimerStart.value);
+    //     this.timerObservable = timer(0, 100);
+    //     this.timerSubscription = this.timerObservable.subscribe(() => {
+    //         this.timePassedSinceTimerStart.patchValue(Date.now() - this.countdownStartedAt.value, {emitEvent: false});
+    //         this.countdownToDisplay = this.formatMilliSecondsToCountdownString(this.userInputTimeInMilliSeconds - this.timePassedSinceTimerStart.value);
+    //         if (this.timePassedSinceTimerStart.value >= this.userInputTimeInMilliSeconds) {
+    //             this.timePassedSinceTimerStart.patchValue(0, {emitEvent: false});
+    //             this.onStopCountdown(false);
+    //         }
+    //     });
+    // }
+    //
+    // onStopCountdown(emitEvent: boolean): void {
+    //     this.countdownRunning?.patchValue(false, {emitEvent: emitEvent});
+    //     this.timerSubscription!.unsubscribe();
+    // }
+    //
+    // onResetCountdown(emitEvent: boolean) {
+    //     this.onStopCountdown(emitEvent);
+    //     this.timePassedSinceTimerStart.patchValue(0);
+    //     this.countdownToDisplay = this.formatMilliSecondsToCountdownString(this.userInputTimeInMilliSeconds);
+    // }
+
+    formatMilliSecondsToCountdownString(milliSecondsToConvert: number): string {
+        if (milliSecondsToConvert <= 0) {
+            return '00:00';
+        }
+        const seconds = Math.floor((milliSecondsToConvert / 1000)) % 60;
+        const minutes = Math.floor((milliSecondsToConvert / 60000)) % 60;
+        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
 }

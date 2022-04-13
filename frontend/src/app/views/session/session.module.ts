@@ -4,22 +4,21 @@ import {SessionComponent} from './session/session.component';
 import {SessionRoutingModule} from './session-routing.module';
 import {SharedModule} from '../../shared/shared.module';
 import {ParticipantsListComponent} from './participants-list/participants-list.component';
-import {CountdownComponent} from './countdown/countdown.component';
-import {SettingsComponent} from './settings/settings.component';
+import {TooltipModule} from 'primeng/tooltip';
+import {BadgeModule} from 'primeng/badge';
 
 
 @NgModule({
     declarations: [
         SessionComponent,
         ParticipantsListComponent,
-        CountdownComponent,
-        SettingsComponent
     ],
     imports: [
         SessionRoutingModule,
         CommonModule,
         SharedModule,
-
+        TooltipModule,
+        BadgeModule,
     ]
 })
 export class SessionModule {
