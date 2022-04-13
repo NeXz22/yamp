@@ -49,6 +49,10 @@
         </div>
         <div>
             <section>
+                {{formatMilliSecondsToCountdownString(currentCountdownValue)}}
+                <p-button *ngIf="!countdownRunning?.value" label="Start Dountdown" type="button" (click)="onStartCountdown()"></p-button>
+                <p-button *ngIf="countdownRunning?.value" label="Stop Dountdown" type="button" (click)="onStopCountdown()"></p-button>
+                <!--<p-button label="Reset Countdown" type="button" (click)="onResetCountdown(true)"></p-button>-->
             </section>
             <section>
                 <h3>Participants</h3>
@@ -57,9 +61,4 @@
         </div>
     </div>
 </main>
-
-<!--{{countdownToDisplay}}-->
-<!--<p-button *ngIf="!countdownRunning?.value" label="Start Dountdown" type="button" (click)="onStartCountdown(true)"></p-button>-->
-<!--<p-button *ngIf="countdownRunning?.value" label="Stop Dountdown" type="button" (click)="onStopCountdown(true)"></p-button>-->
-<!--<p-button label="Reset Countdown" type="button" (click)="onResetCountdown(true)"></p-button>-->
 
