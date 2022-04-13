@@ -53,11 +53,6 @@ export class SessionComponent implements OnInit {
         return this.sessionSettings.get('countdownStartedAt') as FormControl;
     }
 
-    get timePassedSinceTimerStart(): FormControl {
-        return this.sessionSettings.get('timePassedSinceTimerStart') as FormControl;
-    }
-
-
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -75,7 +70,6 @@ export class SessionComponent implements OnInit {
                 participants: new FormControl([], []),
                 countdownRunning: new FormControl(false, []),
                 countdownStartedAt: new FormControl(null, []),
-                timePassedSinceTimerStart: new FormControl(null, []),
                 useNavigatorRole: new FormControl(true, []),
             }),
             userSettings: this.formBuilder.group({})
