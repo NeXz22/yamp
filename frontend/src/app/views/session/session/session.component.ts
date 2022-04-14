@@ -300,9 +300,15 @@ export class SessionComponent implements OnInit {
     }
 
     private moveOnParticipants(): void {
-        const participants: string[] = this.participants.value;
-        var first = participants.splice(0, 1);
-        participants.push(first[0]);
+        let participants: string[] = this.participants.value;
+
+        if (participants.length) {
+            var first = participants.splice(0, 1);
+            participants.push(first[0]);
+        } else {
+            participants = [];
+        }
+
         this.participants.patchValue(participants, {emitEvent: false});
     }
 }

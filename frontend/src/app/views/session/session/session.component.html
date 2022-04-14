@@ -38,10 +38,6 @@
 
                     <label for="useNavigatorRole" style="display: block">Use Navigator-Role</label>
                     <p-inputSwitch id="useNavigatorRole" formControlName="useNavigatorRole"></p-inputSwitch>
-
-                    <div>
-                        <p-button type="button" (click)="onShuffleParticipants()">Shuffle Participants</p-button>
-                    </div>
                 </form>
                 <form  [formGroup]="userSpecificSettings">
                     <h3>User Settings <i pTooltip="Will NOT be synced with other session users"
@@ -80,6 +76,9 @@
             <section>
                 <h3>Participants</h3>
                 <app-participants-list [participants]="participants"></app-participants-list>
+                <div>
+                    <p-button type="button" (click)="onShuffleParticipants()">Shuffle Participants</p-button>
+                </div>
             </section>
         </div>
     </div>
