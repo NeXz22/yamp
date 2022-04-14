@@ -24,7 +24,7 @@ export class SessionComponent implements OnInit {
     private timerSubscription: Subscription | null = null;
     currentCountdownValue: number = 0;
 
-    sounds: {name: string, src: string}[] = [
+    sounds: { name: string, src: string }[] = [
         {name: 'announcement', src: 'announcement-sound-4-21464.mp3'},
         {name: 'glass-breaking', src: 'glass-breaking-93803.mp3'},
         {name: 'metal-design-explosion', src: 'metal-design-explosion-13491.mp3'},
@@ -126,7 +126,7 @@ export class SessionComponent implements OnInit {
             .pipe(debounceTime(100), switchMap((settingsChangedEvent) => of(settingsChangedEvent)))
             .subscribe({
                 next: () => {
-                    this.emitUpdatedSessionSettings(this.sessionSettings.value);
+                    this.emitUpdatedSessionSettings(this.sessionSettings.getRawValue());
                 },
             })
 
@@ -234,6 +234,7 @@ export class SessionComponent implements OnInit {
 
                     if (this.currentCountdownValue <= 0) {
                         this.playSelectedSound();
+                        this.moveOnParticipants();
                         this.onStopCountdown();
                     }
                 });
@@ -295,8 +296,13 @@ export class SessionComponent implements OnInit {
             .then()
             .catch(reason => {
                 console.log(reason);
-                if (reason === 'NotAllowedError') {
-                }
             })
+    }
+
+    private moveOnParticipants(): void {
+        const participants: string[] = this.participants.value;
+        var first = participants.splice(0, 1);
+        participants.push(first[0]);
+        this.participants.patchValue(participants, {emitEvent: false});
     }
 }

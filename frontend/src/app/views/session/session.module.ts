@@ -9,6 +9,7 @@ import {BadgeModule} from 'primeng/badge';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {SliderModule} from 'primeng/slider';
 import {DropdownModule} from 'primeng/dropdown';
+import {OrderListModule} from 'primeng/orderlist';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {DropdownModule} from 'primeng/dropdown';
         InputSwitchModule,
         SliderModule,
         DropdownModule,
+        OrderListModule,
     ]
 })
 export class SessionModule {

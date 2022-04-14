@@ -5,10 +5,10 @@
     user-select: none;
 }
 
-.avatar-extra-large {
-    .p-avatar.p-avatar-lg {
-        width: 5rem;
-        height: 5rem;
-        font-size: 2.5rem;
-    }
+.position-absolute {
+    position: absolute;
+}
+
+.z-999 {
+    z-index: 999;
 }

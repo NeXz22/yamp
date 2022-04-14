@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-participants-list',
@@ -10,6 +11,7 @@ export class ParticipantsListComponent implements OnInit {
 
     @Input()
     participants: FormControl | undefined;
+    selectedParticipants: any[] = [];
 
     constructor() {
     }
@@ -22,5 +24,22 @@ export class ParticipantsListComponent implements OnInit {
         this.participants?.updateValueAndValidity();
         newParticipant.value = '';
         e.preventDefault();
+    }
+
+    isFirstInParticipantsList(participant: string): boolean {
+        return _.indexOf(this.participants?.value, participant) === 0;
+    }
+
+    isSecondInParticipantsList(participant: string): boolean {
+        return _.indexOf(this.participants?.value, participant) === 1;
+    }
+
+    onReorderParticipants(): void {
+        this.participants?.patchValue(this.participants?.value);
+    }
+
+    onRemoveParticipant(participant: string): void {
+        this.selectedParticipants = [];
+        this.participants?.patchValue(_.without(this.participants?.value, participant));
     }
 }

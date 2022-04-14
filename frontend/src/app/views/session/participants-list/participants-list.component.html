@@ -6,9 +6,15 @@
     </div>
 </form>
 
-<div class="participants-list">
-    <div class="participant" *ngFor="let participant of participants?.value; let i = index">
-        <p-avatar class="text-mute avatar-extra-large" pBadge value="{{i + 1}}" pTooltip="{{participant}}" size="large"
-                  label="{{participant.charAt(0).toUpperCase() + participant.charAt(1).toUpperCase()}}"></p-avatar>
-    </div>
-</div>
+<p-orderList [value]="participants?.value" [selection]="selectedParticipants" [dragdrop]="true" (onReorder)="onReorderParticipants()">
+    <ng-template let-participant pTemplate="item">
+        <div class="text-mute" [class.driver]="isFirstInParticipantsList(participant)" [class.navigator]="isSecondInParticipantsList(participant)">
+            <p-avatar pTooltip="{{participant}}" size="large"
+                      label="{{participant?.charAt(0).toUpperCase() + participant?.charAt(1).toUpperCase()}}"></p-avatar>
+            <span>{{participant}}</span>
+            <p-button class="position-absolute z-999" type="button" (onClick)="onRemoveParticipant(participant)">
+                <i class="pi pi-trash"></i>
+            </p-button>
+        </div>
+    </ng-template>
+</p-orderList>
