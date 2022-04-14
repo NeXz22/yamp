@@ -42,9 +42,22 @@
                     <div>
                         <p-button type="button" (click)="onShuffleParticipants()">Shuffle Participants</p-button>
                     </div>
-
+                </form>
+                <form  [formGroup]="userSpecificSettings">
                     <h3>User Settings <i pTooltip="Will NOT be synced with other session users"
                                          class="pi pi-info-circle"></i></h3>
+
+                    <div>
+                        <label for="selectSound" style="display: block">Select Sound</label>
+                        <p-dropdown id="selectSound" [options]="sounds" formControlName="selectedSound" optionLabel="name"></p-dropdown>
+                        <p-button pTooltip="Test Sound" type="button" [disabled]="countdownRunning.value"
+                                  (onClick)="playSelectedSound()">
+                            <i class="pi pi-play"></i>
+                        </p-button>
+
+                        <label for="audioVolume" style="display: block">Sound Volume</label>
+                        <p-slider id="audioVolume" formControlName="audioVolume" [min]="0" [max]="100"></p-slider>
+                    </div>
                 </form>
             </section>
         </div>

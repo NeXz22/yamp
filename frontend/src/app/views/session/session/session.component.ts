@@ -24,6 +24,15 @@ export class SessionComponent implements OnInit {
     private timerSubscription: Subscription | null = null;
     currentCountdownValue: number = 0;
 
+    sounds: {name: string, src: string}[] = [
+        {name: 'announcement', src: 'announcement-sound-4-21464.mp3'},
+        {name: 'glass-breaking', src: 'glass-breaking-93803.mp3'},
+        {name: 'metal-design-explosion', src: 'metal-design-explosion-13491.mp3'},
+        {name: 'surprise', src: 'surprise-sound-effect-99300.mp3'},
+        {name: 'swoosh', src: 'clean-fast-swooshaiff-14784.mp3'},
+        {name: 'whoosh', src: 'whoosh-6316.mp3'},
+    ];
+
     get sessionSettings(): FormGroup {
         return this.settingsForm.get('sessionSettings') as FormGroup;
     }
@@ -60,6 +69,14 @@ export class SessionComponent implements OnInit {
         return this.sessionSettings.get('countdownStoppedAt') as FormControl;
     }
 
+    get selectedSound(): FormControl {
+        return this.userSpecificSettings.get('selectedSound') as FormControl;
+    }
+
+    get audioVolume(): FormControl {
+        return this.userSpecificSettings.get('audioVolume') as FormControl;
+    }
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -80,7 +97,10 @@ export class SessionComponent implements OnInit {
                 countdownStoppedAt: new FormControl(null, []),
                 useNavigatorRole: new FormControl(true, []),
             }),
-            userSettings: this.formBuilder.group({})
+            userSettings: this.formBuilder.group({
+                selectedSound: new FormControl(this.sounds[0], []),
+                audioVolume: new FormControl(50, []),
+            })
         });
 
         this.route.queryParams.pipe(first()).subscribe({
@@ -213,6 +233,7 @@ export class SessionComponent implements OnInit {
                     this.currentCountdownValue = desiredCountdownTime - timePassedSinceTimerStart;
 
                     if (this.currentCountdownValue <= 0) {
+                        this.playSelectedSound();
                         this.onStopCountdown();
                     }
                 });
@@ -263,5 +284,19 @@ export class SessionComponent implements OnInit {
             this.inputMinutes.enable({emitEvent: false});
             this.inputSeconds.enable({emitEvent: false});
         }
+    }
+
+    playSelectedSound(): void {
+        const audio = new Audio();
+        audio.src = '../../../assets/sounds/' + this.selectedSound.value.src;
+        audio.volume = this.audioVolume.value / 100;
+        audio.load();
+        audio.play()
+            .then()
+            .catch(reason => {
+                console.log(reason);
+                if (reason === 'NotAllowedError') {
+                }
+            })
     }
 }

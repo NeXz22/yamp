@@ -7,6 +7,8 @@ import {ParticipantsListComponent} from './participants-list/participants-list.c
 import {TooltipModule} from 'primeng/tooltip';
 import {BadgeModule} from 'primeng/badge';
 import {InputSwitchModule} from 'primeng/inputswitch';
+import {SliderModule} from 'primeng/slider';
+import {DropdownModule} from 'primeng/dropdown';
 
 
 @NgModule({
@@ -21,6 +23,8 @@ import {InputSwitchModule} from 'primeng/inputswitch';
         TooltipModule,
         BadgeModule,
         InputSwitchModule,
+        SliderModule,
+        DropdownModule,
     ]
 })
 export class SessionModule {
