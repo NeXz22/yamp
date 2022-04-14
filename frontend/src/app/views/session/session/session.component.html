@@ -2,7 +2,8 @@
     <section class="status-bar">
         <div class="url-to-share">
             <input value="{{urlToShare}}" disabled>
-            <p-button pTooltip="Copy to clipboard" type="submit" (click)="copyToClipboard(urlToShare)"><i class="pi pi-copy"></i></p-button>
+            <p-button pTooltip="Copy to clipboard" type="submit" (click)="copyToClipboard(urlToShare)"><i
+                class="pi pi-copy"></i></p-button>
         </div>
 
         <div class="socket-connection-status">
@@ -15,11 +16,11 @@
     <div class="grid">
         <div>
             <section>
-                <h3>Session Settings <i pTooltip="Will be auto-synced with other session users" class="pi pi-info-circle"></i></h3>
+                <h3>Session Settings <i pTooltip="Will be auto-synced with other session users"
+                                        class="pi pi-info-circle"></i></h3>
                 <form [formGroup]="sessionSettings">
                     <label for="userInputCountdownMinutes" style="display: block">Minutes</label>
-                    <p-inputNumber [disabled]="sessionSettings?.get('countdownRunning')?.value"
-                                   id="userInputCountdownMinutes" formControlName="inputMinutes"
+                    <p-inputNumber id="userInputCountdownMinutes" formControlName="inputMinutes"
                                    [showButtons]="true" buttonLayout="vertical" inputId="vertical"
                                    [min]="0" [max]="60" decrementButtonClass="p-button-secondary"
                                    incrementButtonClass="p-button-secondary" incrementButtonIcon="pi pi-plus"
@@ -27,8 +28,7 @@
                     </p-inputNumber>
 
                     <label for="userInputCountdownSeconds" style="display: block">Seconds</label>
-                    <p-inputNumber [disabled]="sessionSettings?.get('countdownRunning')?.value"
-                                   id="userInputCountdownSeconds" formControlName="inputSeconds"
+                    <p-inputNumber id="userInputCountdownSeconds" formControlName="inputSeconds"
                                    [showButtons]="true" buttonLayout="vertical" inputId="vertical"
                                    [min]="0" [max]="60" decrementButtonClass="p-button-secondary"
                                    incrementButtonClass="p-button-secondary" incrementButtonIcon="pi pi-plus"
@@ -43,16 +43,26 @@
                         <p-button type="button" (click)="onShuffleParticipants()">Shuffle Participants</p-button>
                     </div>
 
-                    <h3>User Settings <i pTooltip="Will NOT be synced with other session users" class="pi pi-info-circle"></i></h3>
+                    <h3>User Settings <i pTooltip="Will NOT be synced with other session users"
+                                         class="pi pi-info-circle"></i></h3>
                 </form>
             </section>
         </div>
         <div>
             <section>
                 {{formatMilliSecondsToCountdownString(currentCountdownValue)}}
-                <p-button *ngIf="!countdownRunning?.value" label="Start Dountdown" type="button" (click)="onStartCountdown()"></p-button>
-                <p-button *ngIf="countdownRunning?.value" label="Stop Dountdown" type="button" (click)="onStopCountdown()"></p-button>
-                <!--<p-button label="Reset Countdown" type="button" (click)="onResetCountdown(true)"></p-button>-->
+                <p-button *ngIf="!countdownRunning?.value" type="button"
+                          (click)="onStartCountdown()">
+                    <i class="pi pi-play"></i>
+                </p-button>
+                <p-button *ngIf="countdownRunning?.value" type="button"
+                          (click)="onStopCountdown()">
+                    <i class="pi pi-pause"></i>
+                </p-button>
+                <p-button type="button" [disabled]="countdownRunning.value"
+                          (onClick)="onResetCountdown()">
+                    <i class="pi pi-refresh"></i>
+                </p-button>
             </section>
             <section>
                 <h3>Participants</h3>
