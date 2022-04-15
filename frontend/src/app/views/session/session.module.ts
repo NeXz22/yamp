@@ -10,7 +10,7 @@ import {InputSwitchModule} from 'primeng/inputswitch';
 import {SliderModule} from 'primeng/slider';
 import {DropdownModule} from 'primeng/dropdown';
 import {OrderListModule} from 'primeng/orderlist';
-import { GoalsComponent } from './goals/goals.component';
+import {GoalsComponent} from './goals/goals.component';
 
 
 @NgModule({

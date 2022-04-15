@@ -2,8 +2,10 @@
     <section class="status-bar">
         <div class="url-to-share">
             <input value="{{urlToShare}}" disabled>
-            <p-button pTooltip="Copy to clipboard" type="submit" (click)="copyToClipboard(urlToShare)" icon="pi pi-copy"></p-button>
+            <p-button pTooltip="Copy to clipboard" type="button" (click)="copyToClipboard(urlToShare)" icon="pi pi-copy"></p-button>
         </div>
+
+        <p-button [disabled]="countdownRunning.value" pTooltip="Save current session" type="button" (onClick)="onDownloadSession()" icon="pi pi-download"></p-button>
 
         <div class="socket-connection-status">
             Connection:

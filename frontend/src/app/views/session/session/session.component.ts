@@ -6,6 +6,7 @@ import {debounceTime, first, Observable, of, Subscription, switchMap, timer} fro
 import {SessionSettings} from '../shared/session-settings';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import * as _ from 'lodash';
+import * as FileSaver from 'file-saver';
 
 @Component({
     selector: 'app-session',
@@ -88,7 +89,7 @@ export class SessionComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
     ) {
     }
 
@@ -320,5 +321,15 @@ export class SessionComponent implements OnInit {
         }
 
         this.participants.patchValue(participants, {emitEvent: false});
+    }
+
+    onDownloadSession(): void {
+        const fileName = 'yamp-session_' + new Date().toDateString() + '.txt';
+        let currentSessionSettings: SessionSettings = this.sessionSettings.value;
+        currentSessionSettings.countdownRunning = false;
+        currentSessionSettings.countdownStoppedAt = null;
+        currentSessionSettings.countdownStartedAt = null;
+        const blob = new Blob([JSON.stringify(currentSessionSettings)], {type: "text/plain;charset=utf-8"});
+        FileSaver.saveAs(blob, fileName);
     }
 }
