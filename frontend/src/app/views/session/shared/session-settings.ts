@@ -1,7 +1,7 @@
 import {Goal} from './goal';
 
 export interface SessionSettings {
-    sessionId?: string;
+    sessionId: string;
     inputMinutes: number;
     inputSeconds: number;
     participants: string[];

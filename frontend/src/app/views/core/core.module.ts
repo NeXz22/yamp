@@ -2,10 +2,11 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
-import { HomeComponent } from './home/home.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import {HomeComponent} from './home/home.component';
+import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {SharedModule} from '../../shared/shared.module';
 import {FormsModule} from '@angular/forms';
+import {TooltipModule} from 'primeng/tooltip';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import {FormsModule} from '@angular/forms';
         CommonModule,
         SharedModule,
         FormsModule,
+        TooltipModule,
     ]
 })
 export class CoreModule {

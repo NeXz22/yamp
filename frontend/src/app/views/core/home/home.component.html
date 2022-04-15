@@ -3,3 +3,6 @@
     <input id="sessionName" type="text" pInputText [(ngModel)]="sessionName" [ngModelOptions]="{standalone: true}" />
     <p-button label="Create Mob-Session" type="submit" [disabled]="!sessionName.trim()"></p-button>
 </form>
+
+<input id="fileInput" #fileInput type="file" accept=".txt" (change)="onFileSelected(fileInput.files)">
+<p-button [disabled]="fileInput.value.length === 1" pTooltip="Load saved session" type="button" (onClick)="onUploadSession(fileInput)" icon="pi pi-upload"></p-button>

@@ -7,6 +7,7 @@ import {SessionSettings} from '../shared/session-settings';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import * as _ from 'lodash';
 import * as FileSaver from 'file-saver';
+import {SessionService} from '../../../shared/session.service';
 
 @Component({
     selector: 'app-session',
@@ -90,6 +91,7 @@ export class SessionComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private formBuilder: FormBuilder,
+        private sessionService: SessionService,
     ) {
     }
 
@@ -128,6 +130,9 @@ export class SessionComponent implements OnInit {
             },
             complete: () => {
                 this.sessionId.patchValue(this.sessionName, {emitEvent: false});
+                if (this.sessionService.storedSessionSettings) {
+                    this.sessionSettings.patchValue(this.sessionService.storedSessionSettings);
+                }
             }
         });
 
@@ -324,7 +329,7 @@ export class SessionComponent implements OnInit {
     }
 
     onDownloadSession(): void {
-        const fileName = 'yamp-session_' + new Date().toDateString() + '.txt';
+        const fileName = 'yamp-session_' + new Date().toTimeString() + '.txt';
         let currentSessionSettings: SessionSettings = this.sessionSettings.value;
         currentSessionSettings.countdownRunning = false;
         currentSessionSettings.countdownStoppedAt = null;
