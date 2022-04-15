@@ -69,6 +69,14 @@ export class SessionComponent implements OnInit {
         return this.sessionSettings.get('countdownStoppedAt') as FormControl;
     }
 
+    get useGoals(): FormControl {
+        return this.sessionSettings.get('useGoals') as FormControl;
+    }
+
+    get goals(): FormControl {
+        return this.sessionSettings.get('goals') as FormControl;
+    }
+
     get selectedSound(): FormControl {
         return this.userSpecificSettings.get('selectedSound') as FormControl;
     }
@@ -95,7 +103,9 @@ export class SessionComponent implements OnInit {
                 countdownRunning: new FormControl(false, []),
                 countdownStartedAt: new FormControl(null, []),
                 countdownStoppedAt: new FormControl(null, []),
-                useNavigatorRole: new FormControl(true, []),
+                useNavigatorRole: new FormControl(false, []),
+                useGoals: new FormControl(false, []),
+                goals: new FormControl([], []),
             }),
             userSettings: this.formBuilder.group({
                 selectedSound: new FormControl(this.sounds[0], []),

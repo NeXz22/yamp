@@ -1,19 +1,20 @@
 <form (submit)="onAddParticipantSubmit($event, addParticipantInput)">
     <div class="p-inputgroup">
         <input type="text" pInputText placeholder="Enter Name" #addParticipantInput>
-        <button type="submit" pButton pRipple label="Add Participant"
+        <button type="submit" pButton pRipple icon="pi pi-user-plus"
                 [disabled]="!addParticipantInput.value.trim()"></button>
     </div>
 </form>
 
-<p-orderList [value]="participants?.value" [selection]="selectedParticipants" [dragdrop]="true" (onReorder)="onReorderParticipants()">
+<p-orderList [value]="participants?.value" [selection]="selectedParticipants" [dragdrop]="true"
+             (onReorder)="onReorderParticipants()">
     <ng-template let-participant pTemplate="item">
-        <div class="text-mute" [class.driver]="isFirstInParticipantsList(participant)" [class.navigator]="isSecondInParticipantsList(participant)">
+        <div class="text-mute" [class.driver]="isFirstInParticipantsList(participant)"
+             [class.navigator]="isSecondInParticipantsList(participant)">
             <p-avatar size="large" icon="pi pi-user"></p-avatar>
             <span>{{participant}}</span>
-            <p-button class="position-absolute z-999" type="button" (onClick)="onRemoveParticipant(participant)">
-                <i class="pi pi-trash"></i>
-            </p-button>
+            <button pButton class="position-relative z-999 p-button-warning" type="button"
+                    (click)="onRemoveParticipant(participant)" icon="pi pi-trash"></button>
         </div>
     </ng-template>
 </p-orderList>

@@ -1,0 +1,21 @@
+<form (submit)="onAddGoal($event, addGoalInput)">
+    <div class="p-inputgroup">
+        <input type="text" pInputText placeholder="Enter Goal" #addGoalInput>
+        <button type="submit" pButton pRipple icon="pi pi-plus"
+                [disabled]="!addGoalInput.value.trim()"></button>
+    </div>
+</form>
+
+<p-orderList [value]="goals?.value" [selection]="selectedGoals" [dragdrop]="true" (onReorder)="onReorderGoals()">
+    <ng-template let-goal pTemplate="item">
+        <div class="text-mute" [class.driver]="isFirstInGoalList(goal)">
+            <p-avatar *ngIf="goal.finished" size="large" icon="pi pi-star-fill"></p-avatar>
+            <p-avatar *ngIf="!goal.finished" size="large" icon="pi pi-star"></p-avatar>
+            <span>{{goal.name}}</span>
+            <button pButton class="position-relative z-999" type="button" (click)="onFinishGoal(goal)"
+                    icon="pi {{goal.finished ? 'pi-times-circle' : 'pi-check-circle'}}"></button>
+            <button pButton class="position-relative z-999 p-button-warning" type="button" (click)="onRemoveGoal(goal)"
+                    icon="pi pi-trash"></button>
+        </div>
+    </ng-template>
+</p-orderList>

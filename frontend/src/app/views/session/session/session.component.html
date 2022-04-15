@@ -2,8 +2,7 @@
     <section class="status-bar">
         <div class="url-to-share">
             <input value="{{urlToShare}}" disabled>
-            <p-button pTooltip="Copy to clipboard" type="submit" (click)="copyToClipboard(urlToShare)"><i
-                class="pi pi-copy"></i></p-button>
+            <p-button pTooltip="Copy to clipboard" type="submit" (click)="copyToClipboard(urlToShare)" icon="pi pi-copy"></p-button>
         </div>
 
         <div class="socket-connection-status">
@@ -38,6 +37,9 @@
 
                     <label for="useNavigatorRole" style="display: block">Use Navigator-Role</label>
                     <p-inputSwitch id="useNavigatorRole" formControlName="useNavigatorRole"></p-inputSwitch>
+
+                    <label for="useGoals" style="display: block">Use Goals</label>
+                    <p-inputSwitch id="useGoals" formControlName="useGoals"></p-inputSwitch>
                 </form>
                 <form  [formGroup]="userSpecificSettings">
                     <h3>User Settings <i pTooltip="Will NOT be synced with other session users"
@@ -47,9 +49,7 @@
                         <label for="selectSound" style="display: block">Select Sound</label>
                         <p-dropdown id="selectSound" [options]="sounds" formControlName="selectedSound" optionLabel="name"></p-dropdown>
                         <p-button pTooltip="Test Sound" type="button" [disabled]="countdownRunning.value"
-                                  (onClick)="playSelectedSound()">
-                            <i class="pi pi-play"></i>
-                        </p-button>
+                                  (onClick)="playSelectedSound()" icon="pi pi-play"></p-button>
 
                         <label for="audioVolume" style="display: block">Sound Volume</label>
                         <p-slider id="audioVolume" formControlName="audioVolume" [min]="0" [max]="100"></p-slider>
@@ -60,25 +60,23 @@
         <div>
             <section>
                 {{formatMilliSecondsToCountdownString(currentCountdownValue)}}
-                <p-button *ngIf="!countdownRunning?.value" type="button"
-                          (click)="onStartCountdown()">
-                    <i class="pi pi-play"></i>
-                </p-button>
-                <p-button *ngIf="countdownRunning?.value" type="button"
-                          (click)="onStopCountdown()">
-                    <i class="pi pi-pause"></i>
-                </p-button>
-                <p-button type="button" [disabled]="countdownRunning.value"
-                          (onClick)="onResetCountdown()">
-                    <i class="pi pi-refresh"></i>
-                </p-button>
+                <p-button *ngIf="!countdownRunning?.value" type="button" icon="pi pi-play"
+                          (click)="onStartCountdown()"></p-button>
+                <p-button *ngIf="countdownRunning?.value" type="button" icon="pi pi-pause"
+                          (click)="onStopCountdown()"></p-button>
+                <p-button type="button" [disabled]="countdownRunning.value" icon="pi pi-history"
+                          (onClick)="onResetCountdown()"></p-button>
             </section>
             <section>
                 <h3>Participants</h3>
                 <app-participants-list [participants]="participants"></app-participants-list>
                 <div>
-                    <p-button type="button" (click)="onShuffleParticipants()">Shuffle Participants</p-button>
+                    <p-button type="button" (click)="onShuffleParticipants()" icon="pi pi-sort-alt-slash"></p-button>
                 </div>
+            </section>
+            <section *ngIf="useGoals.value">
+                <h3>Goals</h3>
+                <app-goals [goals]="goals"></app-goals>
             </section>
         </div>
     </div>
