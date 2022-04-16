@@ -1,10 +1,22 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http, {
     cors: {
-        origin: "http://localhost:4200",
+        origin: "http://localhost:4444",
+        methods: ["GET"]
     }
 });
+
+if (!process.env.dev) {
+    app.use(express.json());
+    app.use(express.static(process.cwd() + ("/dist-frontend/")));
+    app.get('/*', (req,res) => {
+        res.sendFile(process.cwd() + ("/dist-frontend/index.html"));
+    });
+} else {
+    console.log('Running in dev-mode');
+}
 
 let settingsForRooms = new Map();
 let sessionWaitingForDeletion = new Map();
