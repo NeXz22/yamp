@@ -13,7 +13,7 @@ or forking it.
  
 Frontend (_in '/frontend/'_): `npm ci` & `ng serve`
 
-Server (_in '/server/'_): `npm ci` & `node index.js` (run in dev-mode with env: `dev=true`)
+Server (_in '/server/'_): `npm ci` & `node index.js`
 
 # Production
 

@@ -3,7 +3,7 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http, {
     cors: {
-        origin: "http://localhost:4444",
+        origin: ['http://localhost:4200'],
         methods: ["GET"]
     }
 });
@@ -14,7 +14,10 @@ if (!process.env.dev) {
     app.get('/*', (req,res) => {
         res.sendFile(process.cwd() + ("/dist-frontend/index.html"));
     });
+    console.log('--------------------------------');
+    console.log('Running in prod-mode');
 } else {
+    console.log('--------------------------------');
     console.log('Running in dev-mode');
 }
 
