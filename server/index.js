@@ -1,18 +1,19 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const http = require('http').Server(app);
 const io = require('socket.io')(http, {
     cors: {
-        origin: ['http://localhost:4200'],
+        origin: '*',
         methods: ["GET"]
     }
 });
 
 if (!process.env.dev) {
     app.use(express.json());
-    app.use(express.static(process.cwd() + ("/dist-frontend/")));
-    app.get('/*', (req,res) => {
-        res.sendFile(process.cwd() + ("/dist-frontend/index.html"));
+    app.use(express.static('dist-frontend'));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve('dist-frontend/index.html'));
     });
     console.log('--------------------------------');
     console.log('Running in prod-mode');
