@@ -1,35 +1,18 @@
+const path = require('path');
 const express = require('express');
 const app = express();
-const path = require('path');
 const http = require('http').Server(app);
-const io = require('socket.io')(http, {
-    cors: {
-        origin: ['http://localhost:4444', 'https://yamp-web.site', 'https://www.yamp-web.site'],
-        methods: ["GET"]
-    }
-});
+const socketIO = require('socket.io');
 
-if (!process.env.dev) {
-    app.use(express.json());
-    app.use(express.static('dist-frontend'));
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve('dist-frontend/index.html'));
-    });
-    console.log('--------------------------------');
-    console.log('Running in prod-mode');
-} else {
-    console.log('--------------------------------');
-    console.log('Running in dev-mode');
-}
 
+let io;
 let settingsForRooms = new Map();
 let sessionWaitingForDeletion = new Map();
 
-http.listen(4444, () => {
-    console.log('--------------------------------');
-    console.log('Listening on port 4444');
-    console.log('--------------------------------\n');
-});
+
+setupEnvironment();
+configureServer();
+startServer();
 
 
 io.on("connection", (socket) => {
@@ -79,6 +62,7 @@ io.on("connection", (socket) => {
     });
 });
 
+
 io.of('/').adapter.on('delete-room', (room) => {
     if (settingsForRooms.has(room)) {
         sessionWaitingForDeletion.set(room, setTimeout(() => deleteRoom(room), 300000));
@@ -87,6 +71,7 @@ io.of('/').adapter.on('delete-room', (room) => {
         console.log(`Session [${room}] waiting for deletion.`);
     }
 });
+
 
 function deleteRoom(room) {
     settingsForRooms.delete(room);
@@ -97,4 +82,46 @@ function deleteRoom(room) {
     console.log(`Session [${room}] deleted.`);
     console.log(`Sessions waiting for deletion:`);
     console.log(sessionWaitingForDeletion);
+}
+
+
+function setupEnvironment() {
+    const environment = process.env.NODE_ENV || 'production';
+    require('dotenv').config({path: path.resolve(`./.env.${environment}`)});
+}
+
+
+function configureServer() {
+    const allowedOrigins = process.env.CORS_ORIGIN.split(',');
+
+    io = socketIO(http, {
+        cors: {
+            origin: allowedOrigins,
+            methods: ["GET"]
+        }
+    });
+
+    if (process.env.ENVIRONMENT === 'PRODUCTION') {
+        app.use(express.json());
+        app.use(express.static('dist-frontend'));
+        app.get('*', (req, res) => {
+            res.sendFile(path.resolve('dist-frontend/index.html'));
+        });
+        console.log('--------------------------------');
+        console.log('Running in PRODUCTION-mode');
+    } else {
+        console.log('--------------------------------');
+        console.log('Running in DEVELOPMENT-mode');
+    }
+
+    console.log(`Allowed CORS-Origins: ${allowedOrigins}`);
+}
+
+
+function startServer() {
+    http.listen(process.env.PORT, () => {
+        console.log('--------------------------------');
+        console.log(`Listening on port ${process.env.PORT}`);
+        console.log('--------------------------------\n');
+    });
 }
