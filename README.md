@@ -4,7 +4,7 @@ YAMP (yet another mobbing program) is yet another tool for mob-programming-sessi
 
 Built with Angular, PrimeNG, Express (JS) & Socket.IO
 
-Use the app under http://add-me-later.com/ 
+Use the app under https://yamp-web.site/ 
 or deploy the app on your own server by cloning the repo 
 or forking it.
 
@@ -13,7 +13,7 @@ or forking it.
  
 Frontend (_in '/frontend/'_): `npm ci` & `ng serve`
 
-Server (_in '/server/'_): `npm ci` & `node index.js`
+Server (_in '/server/'_): `npm ci` & `node index.js` (set node-env: 'NODE_ENV=development')
 
 # Production
 
