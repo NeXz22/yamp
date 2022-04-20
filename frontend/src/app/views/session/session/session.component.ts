@@ -8,6 +8,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import * as _ from 'lodash';
 import * as FileSaver from 'file-saver';
 import {SessionService} from '../../../shared/session.service';
+import {environment} from '../../../../environments/environment';
 
 @Component({
     selector: 'app-session',
@@ -166,7 +167,11 @@ export class SessionComponent implements OnInit {
     }
 
     private establishServerConnection(): void {
-        this.socket = io("http://localhost:4444");
+        if (environment.production) {
+            this.socket = io("https://www.yamp-web.site");
+        } else {
+            this.socket = io("http://localhost:4444");
+        }
 
         this.socket.on("connect", () => {
             console.log(`~Server: Connected to Socket. User-ID: [${this.socket.id}].`);
