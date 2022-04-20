@@ -4,7 +4,7 @@ const path = require('path');
 const http = require('http').Server(app);
 const io = require('socket.io')(http, {
     cors: {
-        origin: '*',
+        origin: ['http://localhost:4444', 'https://yamp-web.site', 'https://www.yamp-web.site'],
         methods: ["GET"]
     }
 });
