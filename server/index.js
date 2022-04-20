@@ -16,23 +16,17 @@ startServer();
 
 
 io.on("connection", (socket) => {
-    console.log('--------------------------------');
-    console.log(`New client [${socket.id}] connected.`);
-    console.log('Number of currently connected clients: ' + io.engine.clientsCount);
+    log(`New client [${socket.id}] connected. \nNumber of currently connected clients: ${io.engine.clientsCount}`);
 
     socket.on("disconnect", (reason) => {
-        console.log('--------------------------------');
-        console.log(`Client [${socket.id}] disconnected. Reason: ${reason}`);
-        console.log('Number of currently connected clients: ' + io.engine.clientsCount);
+        log(`Client [${socket.id}] disconnected. Reason: ${reason} \nNumber of currently connected clients: ${io.engine.clientsCount}`);
     });
 
     socket.on('join session by name', (requestedSessionToJoin) => {
         socket.join(requestedSessionToJoin);
         const userJoinedSessionMessage = `User [${socket.id}] joined session [${requestedSessionToJoin}].`;
         io.in(requestedSessionToJoin).emit('message to all users', userJoinedSessionMessage);
-
-        console.log('--------------------------------');
-        console.log(userJoinedSessionMessage);
+        log(userJoinedSessionMessage);
 
         if (settingsForRooms.has(requestedSessionToJoin)) {
             if (settingsForRooms.get(requestedSessionToJoin)) {
@@ -42,10 +36,7 @@ io.on("connection", (socket) => {
             if (sessionWaitingForDeletion.get(requestedSessionToJoin)) {
                 clearTimeout(sessionWaitingForDeletion.get(requestedSessionToJoin));
                 sessionWaitingForDeletion.delete(requestedSessionToJoin);
-
-                console.log(`Deletion of Session [${requestedSessionToJoin}] stopped.`);
-                console.log(`Remaining sessions waiting for deletion:`);
-                console.log(sessionWaitingForDeletion);
+                log(`Deletion of Session [${requestedSessionToJoin}] stopped.`, true);
             }
         } else {
             settingsForRooms.set(requestedSessionToJoin, null);
@@ -56,9 +47,7 @@ io.on("connection", (socket) => {
         let room = updatedSessionSettings.sessionId;
         io.in(room).emit('sync sessionSettings', updatedSessionSettings);
         settingsForRooms.set(room, updatedSessionSettings);
-
-        console.log('--------------------------------');
-        console.log(`User [${socket.id}] updated sessionSettings for Room [${room}].`);
+        log(`User [${socket.id}] updated sessionSettings for Room [${room}].`);
     });
 });
 
@@ -66,23 +55,9 @@ io.on("connection", (socket) => {
 io.of('/').adapter.on('delete-room', (room) => {
     if (settingsForRooms.has(room)) {
         sessionWaitingForDeletion.set(room, setTimeout(() => deleteRoom(room), 300000));
-
-        console.log('--------------------------------');
-        console.log(`Session [${room}] waiting for deletion.`);
+        log(`Session [${room}] waiting for deletion.`, true);
     }
 });
-
-
-function deleteRoom(room) {
-    settingsForRooms.delete(room);
-    clearTimeout(sessionWaitingForDeletion.get(room));
-    sessionWaitingForDeletion.delete(room);
-
-    console.log('--------------------------------');
-    console.log(`Session [${room}] deleted.`);
-    console.log(`Sessions waiting for deletion:`);
-    console.log(sessionWaitingForDeletion);
-}
 
 
 function setupEnvironment() {
@@ -107,21 +82,31 @@ function configureServer() {
         app.get('*', (req, res) => {
             res.sendFile(path.resolve('dist-frontend/index.html'));
         });
-        console.log('--------------------------------');
-        console.log('Running in PRODUCTION-mode');
-    } else {
-        console.log('--------------------------------');
-        console.log('Running in DEVELOPMENT-mode');
     }
 
-    console.log(`Allowed CORS-Origins: ${allowedOrigins}`);
+    log(`Running in ${process.env.ENVIRONMENT}-mode \nAllowed CORS-Origins: ${allowedOrigins}`);
 }
 
 
 function startServer() {
     http.listen(process.env.PORT, () => {
-        console.log('--------------------------------');
-        console.log(`Listening on port ${process.env.PORT}`);
-        console.log('--------------------------------\n');
+        log(`Listening on port ${process.env.PORT}`, true);
     });
+}
+
+
+function deleteRoom(room) {
+    settingsForRooms.delete(room);
+    clearTimeout(sessionWaitingForDeletion.get(room));
+    sessionWaitingForDeletion.delete(room);
+    log(`Session [${room}] deleted.`, true);
+}
+
+
+function log(message, logDate) {
+    if (logDate) {
+        console.log(`-- ${new Date().toISOString()} --`);
+    }
+    console.log(message);
+    console.log('--------------------------------');
 }
