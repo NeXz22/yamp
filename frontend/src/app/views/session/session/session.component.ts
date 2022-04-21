@@ -167,11 +167,7 @@ export class SessionComponent implements OnInit {
     }
 
     private establishServerConnection(): void {
-        if (environment.production) {
-            this.socket = io("https://www.yamp-web.site");
-        } else {
-            this.socket = io("http://localhost:4444");
-        }
+        this.socket = io(environment.serverHost);
 
         this.socket.on("connect", () => {
             console.log(`~Server: Connected to Socket. User-ID: [${this.socket.id}].`);
