@@ -1,6 +1,6 @@
 ![erf](frontend/src/assets/images/yamp_logo.svg)
 
-#YAMP
+# YAMP
 
 YAMP (yet another mobbing program) is yet another tool for mob-programming-sessions.
 
