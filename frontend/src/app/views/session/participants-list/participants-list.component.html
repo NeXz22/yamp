@@ -9,10 +9,14 @@
 <p-orderList [value]="participants?.value" [selection]="selectedParticipants" [dragdrop]="true"
              (onReorder)="onReorderParticipants()">
     <ng-template let-participant pTemplate="item">
-        <div class="text-mute" [class.driver]="isFirstInParticipantsList(participant)"
-             [class.navigator]="isSecondInParticipantsList(participant)">
-            <p-avatar size="large" icon="pi pi-user"></p-avatar>
-            <span>{{participant}}</span>
+        <div class="text-mute item-container" [class.driver]="isFirstInParticipantsList(participant)"
+             [class.navigator]="isSecondInParticipantsList(participant) && useNavigatorRole">
+            <div class="avatar-name-container">
+                <p-avatar icon="pi pi-user"></p-avatar>
+                <span class="text">{{participant}}</span>
+                <span *ngIf="isFirstInParticipantsList(participant)" class="driver-navigator"> (Driver)</span>
+                <span *ngIf="isSecondInParticipantsList(participant) && useNavigatorRole" class="driver-navigator"> (Navigator)</span>
+            </div>
             <button pButton class="position-relative z-999 p-button-warning" type="button"
                     (click)="onRemoveParticipant(participant)" icon="pi pi-trash"></button>
         </div>

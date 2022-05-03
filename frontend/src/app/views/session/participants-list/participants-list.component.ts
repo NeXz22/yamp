@@ -13,6 +13,9 @@ export class ParticipantsListComponent implements OnInit {
     participants: FormControl | undefined;
     selectedParticipants: any[] = [];
 
+    @Input()
+    useNavigatorRole: boolean = true;
+
     constructor() {
     }
 

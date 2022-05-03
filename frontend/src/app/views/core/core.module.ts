@@ -7,6 +7,7 @@ import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {SharedModule} from '../../shared/shared.module';
 import {FormsModule} from '@angular/forms';
 import {TooltipModule} from 'primeng/tooltip';
+import {RouterModule} from '@angular/router';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {TooltipModule} from 'primeng/tooltip';
         SharedModule,
         FormsModule,
         TooltipModule,
+        RouterModule,
     ]
 })
 export class CoreModule {

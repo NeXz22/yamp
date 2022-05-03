@@ -5,8 +5,6 @@
             <p-button pTooltip="Copy to clipboard" type="button" (click)="copyToClipboard(urlToShare)" icon="pi pi-copy"></p-button>
         </div>
 
-        <p-button [disabled]="countdownRunning.value" pTooltip="Save current session" type="button" (onClick)="onDownloadSession()" icon="pi pi-download"></p-button>
-
         <div class="socket-connection-status">
             Connection:
             <i *ngIf="socketConnectionStatus === 0" class="pi pi-spin pi-spinner"></i>
@@ -16,67 +14,82 @@
     </section>
     <div class="grid">
         <div>
-            <section>
+            <section class="settings">
                 <h3>Session Settings <i pTooltip="Will be auto-synced with other session users"
                                         class="pi pi-info-circle"></i></h3>
                 <form [formGroup]="sessionSettings">
-                    <label for="userInputCountdownMinutes" style="display: block">Minutes</label>
-                    <p-inputNumber id="userInputCountdownMinutes" formControlName="inputMinutes"
-                                   [showButtons]="true" buttonLayout="vertical" inputId="vertical"
-                                   [min]="0" [max]="60" decrementButtonClass="p-button-secondary"
-                                   incrementButtonClass="p-button-secondary" incrementButtonIcon="pi pi-plus"
-                                   decrementButtonIcon="pi pi-minus">
-                    </p-inputNumber>
+                    <div class="timer-settings">
+                        <div>
+                            <label for="userInputCountdownMinutes">Minutes</label>
+                            <p-inputNumber id="userInputCountdownMinutes" formControlName="inputMinutes"
+                                           [showButtons]="true" buttonLayout="vertical" inputId="vertical"
+                                           [min]="0" [max]="60" decrementButtonClass="p-button-secondary"
+                                           incrementButtonClass="p-button-secondary" incrementButtonIcon="pi pi-plus"
+                                           decrementButtonIcon="pi pi-minus">
+                            </p-inputNumber>
+                        </div>
+                        <div>
+                            <label for="userInputCountdownSeconds">Seconds</label>
+                            <p-inputNumber id="userInputCountdownSeconds" formControlName="inputSeconds"
+                                           [showButtons]="true" buttonLayout="vertical" inputId="vertical"
+                                           [min]="0" [max]="60" decrementButtonClass="p-button-secondary"
+                                           incrementButtonClass="p-button-secondary" incrementButtonIcon="pi pi-plus"
+                                           decrementButtonIcon="pi pi-minus">
+                            </p-inputNumber>
+                        </div>
+                    </div>
 
-                    <label for="userInputCountdownSeconds" style="display: block">Seconds</label>
-                    <p-inputNumber id="userInputCountdownSeconds" formControlName="inputSeconds"
-                                   [showButtons]="true" buttonLayout="vertical" inputId="vertical"
-                                   [min]="0" [max]="60" decrementButtonClass="p-button-secondary"
-                                   incrementButtonClass="p-button-secondary" incrementButtonIcon="pi pi-plus"
-                                   decrementButtonIcon="pi pi-minus">
-                    </p-inputNumber>
 
-
-                    <label for="useNavigatorRole" style="display: block">Use Navigator-Role</label>
+                    <label for="useNavigatorRole">Use Navigator-Role</label>
                     <p-inputSwitch id="useNavigatorRole" formControlName="useNavigatorRole"></p-inputSwitch>
 
-                    <label for="useGoals" style="display: block">Use Goals</label>
+                    <label for="useGoals">Use Goals</label>
                     <p-inputSwitch id="useGoals" formControlName="useGoals"></p-inputSwitch>
                 </form>
                 <form  [formGroup]="userSpecificSettings">
-                    <h3>User Settings <i pTooltip="Will NOT be synced with other session users"
+                    <h3 class="user-settings-headline">User Settings <i pTooltip="Will NOT be synced with other session users"
                                          class="pi pi-info-circle"></i></h3>
 
                     <div>
                         <label for="selectSound" style="display: block">Select Sound</label>
-                        <p-dropdown id="selectSound" [options]="sounds" formControlName="selectedSound" optionLabel="name"></p-dropdown>
-                        <p-button pTooltip="Test Sound" type="button" [disabled]="countdownRunning.value"
-                                  (onClick)="playSelectedSound()" icon="pi pi-play"></p-button>
+                        <div class="dropdown-button-container">
+                            <p-dropdown id="selectSound" [options]="sounds" formControlName="selectedSound" optionLabel="name"></p-dropdown>
+                            <p-button pTooltip="Test Sound" type="button"
+                                      (onClick)="playSelectedSound()" icon="pi pi-play"></p-button>
+                        </div>
 
                         <label for="audioVolume" style="display: block">Sound Volume</label>
                         <p-slider id="audioVolume" formControlName="audioVolume" [min]="0" [max]="100"></p-slider>
                     </div>
                 </form>
+
+                <div class="save-session-btn">
+                    <p-button label="Save current session" class="" [disabled]="countdownRunning.value" type="button" (onClick)="onDownloadSession()" icon="pi pi-download"></p-button>
+                </div>
             </section>
         </div>
         <div>
-            <section>
-                {{formatMilliSecondsToCountdownString(currentCountdownValue)}}
-                <p-button *ngIf="!countdownRunning?.value" type="button" icon="pi pi-play"
-                          (click)="onStartCountdown()"></p-button>
-                <p-button *ngIf="countdownRunning?.value" type="button" icon="pi pi-pause"
-                          (click)="onStopCountdown()"></p-button>
-                <p-button type="button" [disabled]="countdownRunning.value" icon="pi pi-history"
-                          (onClick)="onResetCountdown()"></p-button>
-            </section>
-            <section>
-                <h3>Participants</h3>
-                <app-participants-list [participants]="participants"></app-participants-list>
-                <div>
-                    <p-button type="button" (click)="onShuffleParticipants()" icon="pi pi-sort-alt-slash"></p-button>
+            <section class="timer" [class.animation-paused]="!countdownRunning.value">
+                <div class="time-container">
+                    <div class="time">{{formatMilliSecondsToCountdownString(currentCountdownValue)}}</div>
+                </div>
+                <div class="button-container">
+                    <button pButton *ngIf="!countdownRunning?.value" type="button" icon="pi pi-play" class="p-button-lg"
+                              (click)="onStartCountdown()"></button>
+                    <button pButton *ngIf="countdownRunning?.value" type="button" icon="pi pi-pause" class="p-button-lg"
+                              (click)="onStopCountdown()"></button>
+                    <button pButton type="button" [disabled]="countdownRunning.value" icon="pi pi-history" class="p-button-lg"
+                              (click)="onResetCountdown()"></button>
                 </div>
             </section>
-            <section *ngIf="useGoals.value">
+            <section class="list">
+                <h3>Participants</h3>
+                <app-participants-list [participants]="participants" [useNavigatorRole]="useNavigatorRole.value"></app-participants-list>
+                <div class="m-t-1">
+                    <p-button label="Shuffle" icon="pi pi-sort-alt-slash" type="button" (click)="onShuffleParticipants()"></p-button>
+                </div>
+            </section>
+            <section class="list" *ngIf="useGoals.value">
                 <h3>Goals</h3>
                 <app-goals [goals]="goals"></app-goals>
             </section>

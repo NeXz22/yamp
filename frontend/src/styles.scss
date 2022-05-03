@@ -1,5 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import "src/assets/css/theme_override";
+html, body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #1b1c1e;
+    color: #313133;
+}
 
 .text-mute {
     user-select: none;
@@ -15,4 +20,8 @@
 
 .z-999 {
     z-index: 999;
+}
+
+.m-t-1 {
+    margin-top: 1rem;
 }

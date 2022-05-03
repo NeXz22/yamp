@@ -72,6 +72,10 @@ export class SessionComponent implements OnInit {
         return this.sessionSettings.get('countdownStoppedAt') as FormControl;
     }
 
+    get useNavigatorRole(): FormControl {
+        return this.sessionSettings.get('useNavigatorRole') as FormControl;
+    }
+
     get useGoals(): FormControl {
         return this.sessionSettings.get('useGoals') as FormControl;
     }
